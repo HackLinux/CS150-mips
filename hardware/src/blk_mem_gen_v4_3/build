@@ -1,0 +1,7 @@
+#!/bin/bash
+
+coregen -b /dev/stdin <<EOM
+NEWPROJECT .
+SETPROJECT .
+EOM
+coregen -p . -b blk_mem_gen_v4_3.xco

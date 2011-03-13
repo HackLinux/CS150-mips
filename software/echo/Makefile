@@ -1,0 +1,27 @@
+TARGET := echo
+
+CSRCS := $(wildcard *.c)
+COBJS := $(CSRCS:%.c=%.c.o)
+
+SSRCS := $(wildcard *.s)
+SOBJS := $(SSRCS:%.s=%.s.o)
+
+LDSRC := $(TARGET).ld
+
+default: $(TARGET)
+
+$(TARGET): $(COBJS) $(SOBJS)
+	mips-gcc -nostartfiles -nostdlib -nodefaultlibs -T $(LDSRC) $^ -o $@.elf
+	mips-strip -R .pdr -R .comment -R .reginfo $@.elf
+	mips-objcopy -O binary $(TARGET).elf $(TARGET).bin
+	../../tools/bin2mif < $(TARGET).bin > $(TARGET).mif
+	../../tools/bin2coe < $(TARGET).bin > $(TARGET).coe
+
+%.c.o: %.c
+	mips-gcc -std=c99 -c $< -o $@
+
+%.s.o: %.s
+	mips-as $< -o $@
+
+clean:
+	rm -f $(COBJS) $(SOBJS) $(TARGET).elf $(TARGET).{bin,mif} $(TARGET).coe
