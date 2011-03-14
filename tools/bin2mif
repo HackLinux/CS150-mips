@@ -1,8 +1,0 @@
-#!/usr/bin/python
-
-import sys, struct
-
-data = sys.stdin.read()
-
-for i in xrange(0, len(data), 4):
-    print bin(struct.unpack('>L', data[i:i+4])[0])[2:].zfill(32)
