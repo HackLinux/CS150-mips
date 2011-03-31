@@ -1,0 +1,61 @@
+module aludec(input      [5:0] Funct,
+              input      [1:0] ALUOp,
+              output reg [4:0] ALUControlE);
+
+//0000:and
+//0001:or
+//0010:addu
+//0011:xor
+//0100:pass B
+//0101:nor
+//0010:subu
+
+//0011:slt
+//0100:sltu
+//0101:sll
+//0110:srl
+//0111:sra
+
+//0010:and
+//0011:nor
+
+//1000:?
+//1001:?
+//1010:beq
+//1011:bne
+//1100:bgtz
+//1101:bgez
+//1110:bltz
+//1111:blez
+
+
+		6'b000001: controls <= 16'b1XXX1X00X010 ??00; //BLTZ,BGEZ
+		6'b000100: controls <= 16'b1XXX1X00X010 00; //BEQ
+		6'b000101: controls <= 16'b1XXX1X00X010 00; //BNE
+		6'b000110: controls <= 16'b1XXX1X00X010 00; //BLEZ
+		6'b000111: controls <= 16'b1XXX1X00X010 00; //BGTZ
+
+
+
+  always @(*)
+	case(ALUOp)
+		2'b00: ALUControlE <= 4'b010;  // add
+	      	2'b01: ALUControlE <= 4'b110;  // sub
+	      	default: case(Funct)          // RTYPE
+			6'b000000: ALUControlE <= 4'; //SLL
+			6'b000010: ALUControlE <= 4'; //SRL
+			6'b000011: ALUControlE <= 4'; //SRA
+			6'b000100: ALUControlE <= 4'; //SLLV
+			6'b000110: ALUControlE <= 4'; //SRLV
+			6'b000111: ALUControlE <= 4'; //SRAV
+			6'b100001: ALUControlE <= 4'; //ADDU
+			6'b100011: ALUControlE <= 4'; //SUBU
+			6'b100100: ALUControlE <= 4'; //AND
+			6'b100101: ALUControlE <= 4'; //OR
+			6'b100110: ALUControlE <= 4'; //XOR
+			6'b100111: ALUControlE <= 4'; //NOR
+			6'b101010: ALUControlE <= 4'; //SLT
+			6'b101011: ALUControlE <= 4'; //SLTU
+		endcase
+	endcase
+endmodule

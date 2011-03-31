@@ -1,0 +1,18 @@
+module maskdec(	input [1:0] 		MaskOp,
+		output reg [1:0]	MaskControlE,
+		output reg [1:0]	LBLHEnableM);
+
+  always @(*)
+    case(MaskOp)
+      2'b00: MaskControlE <= 2'b;  // add
+      2'b01: MaskControlE <= 2'b;  // sub
+      default: case(funct)          // RTYPE
+          6'b100000: MaskControlE <= 3'b010; // ADD
+          6'b100010: MaskControlE <= 3'b110; // SUB
+          6'b100100: MaskControlE <= 3'b000; // AND
+          6'b100101: MaskControlE <= 3'b001; // OR
+          6'b101010: MaskControlE <= 3'b111; // SLT
+          default:   MaskControlE <= 3'bxxx; // ???
+        endcase
+    endcase
+endmodule
