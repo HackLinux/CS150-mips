@@ -101,8 +101,7 @@ module ml505top
     assign rst = count_r == 16'h000F | ~pll_lock | ~ctrl_lock;
 
     assign next_count_r
-        = (reset_r[1:1])     ? 16'h0001
-        : (count_r == 15'b0) ? 16'h0000
+        = (count_r == 26'b0) ? (reset_r[3] ? 26'b1 : 26'b0)
         :                      count_r + 1;
 
 endmodule
