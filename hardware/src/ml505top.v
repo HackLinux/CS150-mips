@@ -4,6 +4,18 @@ module ml505top
     output       FPGA_SERIAL_TX,
     input        GPIO_SW_C,
     input        USER_CLK
+
+    input        PHY_COL,
+    input        PHY_CRS,
+    output       PHY_RESET,
+    input        PHY_RXCLK,
+    input        PHY_RXCTL_RXDV,
+    input  [3:0] PHY_RXD,
+    input        PHY_RXER,
+    input        PHY_TXCLK,
+    output       PHY_TXCTL_TXEN,
+    output [3:0] PHY_TXD,
+    output       PHY_TXER
 );
     wire rst;
 
