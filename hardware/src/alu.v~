@@ -1,33 +1,45 @@
-module alu(input [31:0] a, b,
-		input [3:0] alucontrol,
+module alu(	input [31:0] a, b,
+		input [4:0] alucontrol,
 		output [31:0] y);
 
-//0000:and
-//0001:or
-//0010:addu
-//0011:xor
-//0100:pass B
-//0101:nor
-//0110:subu
-//0111:slt
-//1000:sltu
-//1001:sll
-//1010:srl
-//1011:sra
+//00000:addu
+//00001:subu
+//00010:and
+//00011:nor
+//00100:or
+//00101:xor
+//00110:pass B
+//00111:?     	//pass A?
+//01000:?
+//01001:sll  	//use only two operations for sl/sr?
+//01010:srl
+//01011:sra
+//01110:slt
+//01111:sltu
+//11000:?
+//11001:?
+//11010:beq
+//11011:bne
+//11100:bgtz
+//11101:bgez
+//11110:bltz
+//11111:blez
 
 always@(*)
 	case(alucontrol)
-		4'b0000: y <= a & b;
-		4'b0001: y <= a | b;
-		4'b0010: y <= $unsigned(a) + $unsigned(b);
-		4'b0011: y <= a ^ b;
-		4'b0100: y <= b;
-		4'b0101: y <= !(a | b);
-		4'b0110: y <= $unsigned(a) - $unsigned(b);
-		4'b0111: y <= ( a < b ? 32'b1 : 32'b0 );
-		4'b1000: y <= ( $unsigned(a) < $unsigned(b) ? 32'b1 : 32'b0);
-		4'b1001: y <= a << b;
-		4'b1010: y <= a >> b;
-		4'b1011: y <= $signed(a) >>> b;
+		5'b00000: y <= $unsigned(a) + $unsigned(b);
+		5'b00001: y <= $unsigned(a) - $unsigned(b);
+		5'b00010: y <= a & b;
+		5'b00011: y <= !(a | b);
+		5'b00100: y <= a | b;
+		5'b00101: y <= a ^ b;
+		5'b00110: y <= b;
+//		5'b00111: y <= a;
+		5'b01001: y <= a << b;
+		5'b01010: y <= a >> b;
+		5'b01011: y <= a >>> b;
+
+		5'b01110: y <= ( a < b ? 32'b1 : 32'b0 );
+		5'b01111: y <= ( $unsigned(a) < $unsigned(b) ? 32'b1 : 32'b0);
 	endcase
 endmodule

@@ -45,9 +45,12 @@ always @ (*)
 		6'b101001: controls <= 16'b00000X01XXX0 10; //SH
 		6'b101011: controls <= 16'b00000X01XXX0 ??; //SW
 		default:   case(Funct) 
+			6'b000000: controls <= 16'b0001 1111 0XX0 ??00; //SLL
+			6'b000010: controls <= 16'b0001 1111 0XX0 ??00; //SRL
+			6'b000011: controls <= 16'b0001 1111 0XX0 ??00; //SRA
 			6'b001000: controls <= 16'b1XXXXXXXX00X 00; //JR
 			6'b001001: controls <= 16'b110XXXXX100X 00; //JALR
-			default:   controls <= 16'b000111000XX0 ??00; //R-type
+			default:   controls <= 16'b0001 1100 0XX0 ??00; //All Other R-type
 		endcase
 	endcase
 endmodule

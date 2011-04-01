@@ -1,6 +1,6 @@
 module aludec(input      [5:0] Funct,
               input      [1:0] ALUOp,
-              output reg [4:0] ALUControlE);
+              output reg [5:0] ALUControlE);
 
 //0000:and
 //0001:or
@@ -16,46 +16,61 @@ module aludec(input      [5:0] Funct,
 //0110:srl
 //0111:sra
 
-//0010:and
-//0011:nor
+//00010:and
+//00011:nor
 
-//1000:?
-//1001:?
-//1010:beq
-//1011:bne
-//1100:bgtz
-//1101:bgez
-//1110:bltz
-//1111:blez
-
-
-		6'b000001: controls <= 16'b1XXX1X00X010 ??00; //BLTZ,BGEZ
-		6'b000100: controls <= 16'b1XXX1X00X010 00; //BEQ
-		6'b000101: controls <= 16'b1XXX1X00X010 00; //BNE
-		6'b000110: controls <= 16'b1XXX1X00X010 00; //BLEZ
-		6'b000111: controls <= 16'b1XXX1X00X010 00; //BGTZ
+//11000:?
+//11001:?
+//11010:beq
+//11011:bne
+//11100:bgtz
+//11101:bgez
+//11110:bltz
+//11111:blez
 
 
+//00000:addu
+//00001:subu
+//00010:and
+//00011:nor
+//00100:or
+//00101:xor
+//00110:pass B
+//00111:?     	//pass A?
+//01000:?
+//01001:sll  	//use only two operations for sl/sr?
+//01010:srl
+//01011:sra
+//01110:slt
+//01111:sltu
+//11000:?
+//11001:?
+//11010:beq
+//11011:bne
+//11100:bgtz
+//11101:bgez
+//11110:bltz
+//11111:blez
 
   always @(*)
 	case(ALUOp)
-		2'b00: ALUControlE <= 4'b010;  // add
-	      	2'b01: ALUControlE <= 4'b110;  // sub
+		2'b00: ALUControlE <= 5'b00010;  // addu
+	      	2'b01: ALUControlE <= 5'b110;  // subu
 	      	default: case(Funct)          // RTYPE
-			6'b000000: ALUControlE <= 4'; //SLL
-			6'b000010: ALUControlE <= 4'; //SRL
-			6'b000011: ALUControlE <= 4'; //SRA
-			6'b000100: ALUControlE <= 4'; //SLLV
-			6'b000110: ALUControlE <= 4'; //SRLV
-			6'b000111: ALUControlE <= 4'; //SRAV
-			6'b100001: ALUControlE <= 4'; //ADDU
-			6'b100011: ALUControlE <= 4'; //SUBU
-			6'b100100: ALUControlE <= 4'; //AND
-			6'b100101: ALUControlE <= 4'; //OR
-			6'b100110: ALUControlE <= 4'; //XOR
-			6'b100111: ALUControlE <= 4'; //NOR
-			6'b101010: ALUControlE <= 4'; //SLT
-			6'b101011: ALUControlE <= 4'; //SLTU
+			6'b000000: ALUControlE <= 5'; //SLL
+			6'b000010: ALUControlE <= 5'; //SRL
+			6'b000011: ALUControlE <= 5'; //SRA
+			6'b000100: ALUControlE <= 5'; //SLLV
+			6'b000110: ALUControlE <= 5'; //SRLV
+			6'b000111: ALUControlE <= 5'; //SRAV
+			6'b100001: ALUControlE <= 5'; //ADDU
+			6'b100011: ALUControlE <= 5'; //SUBU
+			6'b100100: ALUControlE <= 5'; //AND
+			6'b100101: ALUControlE <= 5'; //OR
+			6'b100110: ALUControlE <= 5'; //XOR
+			6'b100111: ALUControlE <= 5'; //NOR
+			6'b101010: ALUControlE <= 5'; //SLT
+			6'b101011: ALUControlE <= 5'; //SLTU
 		endcase
 	endcase
 endmodule

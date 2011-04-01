@@ -16,9 +16,9 @@ module controller(	input  [5:0]	Op, Funct,
 	wire [1:0] aluop;
 	wire [1:0] maskop;
 
-	maindec mnd(Op, JALValM, JALDstM, PCBranchAddrE, RegWriteM, SignOrZeroE, RegDstE, RegValE, ALUSrcE, MemWriteM, MemToRegM, ALUOp, MaskOp);
+	maindec mnd(Op, Funct, JALValM, JALDstM, PCBranchAddrE, RegWriteM, SignOrZeroE, RegDstE, RegValE, ALUSrcE, MemWriteM, MemToRegM, ALUOp, MaskOp);
 	aludec  ad(Funct, ALUOp, ALUControlE);
-	maskdec mkd(Op, MaskControlE, LBLHEnableM);
+	maskdec mkd(MaskOp, MaskControlE, LBLHEnableM);
 
   	assign JumpM = ALUControlE[3] & ZeroE;
 
