@@ -1,47 +1,59 @@
-module alu(	input [31:0] a, b,
-		input [3:0] alucontrol,
-		output [31:0] y);
+module alu(	input [31:0] 	a, b,
+		input [4:0] 	alucontrol,
+		output [31:0] 	y);
 
 //Correct use of less than or equal to (i.e. not interpreted as non-blocking)
 
-//0000:addu
-//0001:subu
-//0010:sll
-//0011:srl
-//0100:sra
-//0101:or
-//0110:xor
-//0111:		//pass B?
-//1000:		//pass A?
-//1001:		//pass?
-//1010:and	(beq)
-//1011:nor	(bne)
-//1100:bgtz	
-//1101:bgez	
-//1110:bltz	(slt)
-//1111:blez	(sltu)
-
-
+//00000:addu
+//00001:subu
+//00010:and
+//00011:nor
+//00100:or
+//00101:xor
+//00110:pass B 	//needed?
+//00111:pass A 	//needed?
+//01000:add	//needed?
+//01001:sll  	
+//01010:srl
+//01011:sra
+//01110:slt
+//01111:sltu
+//10000-10111:	//needed?
+//11000:?
+//11001:?
+//11010:beq
+//11011:bne
+//11100:bgtz
+//11101:bgez
+//11110:bltz
+//11111:blez
+ 
 always@(*)
 	case(alucontrol)
-		4'b0000: y <= $unsigned(a) + $unsigned(b);
-		4'b0001: y <= $unsigned(a) - $unsigned(b);
-		4'b0010: y <= a << b;
-		4'b0011: y <= a >> b;
-		4'b0100: y <= a >>> b;
-		4'b0101: y <= a | b;
-		4'b0110: y <= a ^ b;
-//		4'b0111: y <= b;
-		4'b1000: y <= a;
-		4'b1001: ?
-//		4'b1010: y <= a & b;
-		4'b1011: y <= !(a | b);
-		4'b1100: y <= ( $unsigned(a) > $unsigned(b) ? 32'b1 : 32'b0);
-		4'b1101: y <= ( $unsigned(a) >= $unsigned(b) ? 32'b1 : 32'b0);
-		4'b1110: y <= ( a < b ? 32'b1 : 32'b0 );
-		4'b1111: y <= ( $unsigned(a) <= $unsigned(b) ? 32'b1 : 32'b0);
-
+		5'b00000: y <= a + b;
+		5'b00001: y <= a - b;
+		5'b00010: y <= a & b;
+		5'b00011: y <= !(a | b);
+		5'b00100: y <= a | b;
+		5'b00101: y <= a ^ b;
+		5'b00110: y <= b;
+		5'b00111: y <= a;
+//		5'b01000: y <= signed(a) + signed(b)
+		5'b01001: y <= a << b;
+		5'b01010: y <= a >> b;
+		5'b01011: y <= a >>> b;
+		5'b01110: y <= ( signed(a) < signed(b) ? 32'b1 : 32'b0);
+		5'b01111: y <= ( a < b ? 32'b1 : 32'b0);
+//		5'b10000-5'b10111:
+//		5'b11010: 
+//		5'b11011: 
+		5'b11100: y <= ( a > 0 ? 32'b1 : 32'b0);
+		5'b11101: y <= ( a >= 0 ? 32'b1 : 32'b0);
+		5'b11110: y <= ( a < 0 ? 32'b1 : 32'b0 );
+		5'b11111: y <= ( a <= 0 ? 32'b1 : 32'b0);
+		default: 							//ERROR!
 	endcase
 endmodule
+
 
 
