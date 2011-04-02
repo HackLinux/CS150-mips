@@ -1,5 +1,6 @@
 module alu(	input [31:0] 	a, b,
-		input [4:0] 	alucontrol,
+		input [4:0] 	ALUControlE,
+		output 		ZeroE,
 		output [31:0] 	y);
 
 //Correct use of less than or equal to (i.e. not interpreted as non-blocking)
@@ -18,9 +19,7 @@ module alu(	input [31:0] 	a, b,
 //01011:sra
 //01110:slt
 //01111:sltu
-//10000-10111:	//needed?
-//11000:?
-//11001:?
+//10000-11001:	//needed?
 //11010:beq
 //11011:bne
 //11100:bgtz
@@ -44,13 +43,13 @@ always@(*)
 		5'b01011: y <= a >>> b;
 		5'b01110: y <= ( signed(a) < signed(b) ? 32'b1 : 32'b0);
 		5'b01111: y <= ( a < b ? 32'b1 : 32'b0);
-//		5'b10000-5'b10111:
-//		5'b11010: 
-//		5'b11011: 
-		5'b11100: y <= ( a > 0 ? 32'b1 : 32'b0);
-		5'b11101: y <= ( a >= 0 ? 32'b1 : 32'b0);
-		5'b11110: y <= ( a < 0 ? 32'b1 : 32'b0 );
-		5'b11111: y <= ( a <= 0 ? 32'b1 : 32'b0);
+//		5'b10000-5'b11001:
+		5'b11010: y <= ( (a == b) ? ZeroE = 1'b1 : ZeroE = 1'b0);
+		5'b11011: y <= ( (a != b) ? ZeroE = 1'b1 : ZeroE = 1'b0);
+		5'b11100: y <= ( a > 0 ? ZeroE = 1'b1 : ZeroE = 1'b0);
+		5'b11101: y <= ( a >= 0 ? ZeroE = 1'b1 : ZeroE = 1'b0);
+		5'b11110: y <= ( a < 0 ? ZeroE = 1'b1 : ZeroE = 1'b0);
+		5'b11111: y <= ( a <= 0 ? ZeroE = 1'b1 : ZeroE = 1'b0);
 		default: 							//ERROR!
 	endcase
 endmodule

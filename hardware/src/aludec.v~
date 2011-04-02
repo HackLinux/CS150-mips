@@ -1,6 +1,7 @@
 module aludec(	input [5:0] 	Funct,
               	input [1:0] 	ALUOp,
 		input 		SixteenthBit,
+		output		ZeroE
               	output reg [4:0] ALUControlE);
 
 //00000:addu
