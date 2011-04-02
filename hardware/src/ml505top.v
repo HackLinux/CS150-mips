@@ -19,11 +19,11 @@ module ml505top
 );
     wire rst;
 
-    reg [1:0]  reset_r;
-    reg [15:0] count_r;
+    reg [3:0]  reset_r;
+    reg [25:0] count_r;
 
-    wire [1:0]  next_reset_r;
-    wire [15:0] next_count_r;
+    wire [3:0]  next_reset_r;
+    wire [25:0] next_count_r;
 
     wire user_clk_g;
 
@@ -108,9 +108,9 @@ module ml505top
         count_r <= next_count_r;
     end
 
-    assign next_reset_r = {reset_r[0:0], GPIO_SW_C};
+    assign next_reset_r = {reset_r[2:0], GPIO_SW_C};
 
-    assign rst = count_r == 16'h000F | ~pll_lock | ~ctrl_lock;
+    assign rst = (count_r == 26'b1) | ~pll_lock | ~ctrl_lock;
 
     assign next_count_r
         = (count_r == 26'b0) ? (reset_r[3] ? 26'b1 : 26'b0)
