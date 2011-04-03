@@ -7,17 +7,21 @@ module datapath(	input		clk, reset,
 			input [1:0]	ALUSrcE, 
 			input		MemToRegM,
 			input [3:0]	ALUControlE,
-			input       	JumpM;
+			input       	JumpM,
+			input [1:0]	MaskControlE,
+			input [1:0]	LBLHEnableM,
 	                output [31:0] 	PCI,
         	        input  [31:0] 	InstrI,
-                	output [31:0] 	ALUoutE, RTValE,
-	                input  [31:0] 	MaskDataM
+                	output [31:0] 	MaskM, ALUOutM, WriteDataM,
+	                input  [31:0] 	ReadDataM
 			input		ForwardAE,
 			input		ForwardBE,
 			output 		RsE,
 			output		RtE,
 			output 		RegWriteM,
 			output		WriteRegM);
+
+//outputs ALUOutM, WriteDataM
 
   wire [4:0]  writereg;
   wire [31:0] PCNextI, PCPlus4I, PCBranchE, PCBranchM;
@@ -28,6 +32,9 @@ module datapath(	input		clk, reset,
   wire [31:0] RSValE, PCBranchCompE, A3, WD3, RSValE, RTValE, WriteRegE, SrcBMuxE, ImmSh;
   wire [27:0] JumpSh;
   wire [4:0] WriteRegMuxE;
+
+  wire [31:0] SrcA, SrcB, ALUOutE;
+
 
  	assign RsE = Instr[25:21];
  	assign RtE = Instr[20:16];
@@ -74,7 +81,14 @@ module datapath(	input		clk, reset,
 	//ALU
 	alu	alu(SrcA, SrcB, ALUControlE, ALUOutE, ZeroE);
 
+  // Mask logic
+	//writemask
+	writemask writemask(MaskControlE, ALUOutE, WriteDataE, MaskE, WriteDataE);
+	//maskapply
+	maskapply maskapply(ReadDataM, LBLHEnableM, MaskDataM);
+
 //How to implement pipeline register?
 //pflopr(input: MaskE, ALUOutE, WriteDataE, WriteRegE, PCBranchE; output: MaskM, ALUOutM, WriteDataM, WriteRegM, PCBranchM)
 //also: input: JALValE, JALDestE, RegWriteE, MemToRegE; output: JALValM, JALDestM, RegWriteM, MemToRegM;
+
 endmodule
