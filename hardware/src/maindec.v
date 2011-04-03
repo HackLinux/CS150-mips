@@ -13,6 +13,9 @@ module maindec(	input [5:0] Op,
 
 reg [15:0] controls;
 
+
+//We don't need a jumpE field because the datapath calculates jumpE by itself. See for yourself. I took it out of the maindec, controller, and mips. 
+
 assign {JALValM, JALDstM, RegWriteM, 
 	SignOrZeroE, RegDstE, ALUSrcE,
 	PCBranchAddrE, MemToRegM, 

@@ -33,7 +33,7 @@ module datapath(	input		clk, reset,
   wire [31:0] SignImmE, SignImmSh;
   wire [31:0] PCIOut; 
 
-  wire [31:0] PCBranchCompE, WD3, RSValE, RTValE, SrcBMuxE, ImmSh;
+  wire [31:0] PCBranchCompE, WD3, RSValE, RTValE, SrcBMuxE, MaskE, ImmSh;
   wire [4:0] A3;
   wire JumpE;
   wire [27:0] JumpSh;
@@ -83,7 +83,7 @@ module datapath(	input		clk, reset,
 	//SrcA mux 
 	mux2	srcahazmux(RSValE, ResultM, ForwardAE, SrcA);
 	//SrcB mux
-	mux2	srcbhazmux(RTValE, ResultM, ForwardBE, SrcB);
+	mux2	srcbhazmux(SrcBMuxE, ResultM, ForwardBE, SrcB);
 	//ALU
 	alu	alu(SrcA, SrcB, ALUControlE, ZeroE, ALUOutE);
 

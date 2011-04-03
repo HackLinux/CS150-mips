@@ -39,6 +39,10 @@ module maskdec(	input [3:0] 		MaskOp,
 			MaskControlE = 2'b11; 	
 			LBLHEnableM = 2'b00;	
 		end
+		4'b1001-4'b1111: begin	//UNDEFINED BEHAVIOR;
+			MaskControlE = 2'b00; 	//UNDEFINED BEHAVIOR;
+			LBLHEnableM = 2'b00; //UNDEFINED BEHAVIOR;
+		end //UNDEFINED BEHAVIOR;
 //		default: 						//ERROR!
     	endcase
 endmodule
