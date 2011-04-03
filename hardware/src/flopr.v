@@ -1,5 +1,3 @@
-//How to implement pipeline register?
-
 module flopr #(parameter WIDTH = 8)
               (input                  clk, reset,
                input      [WIDTH-1:0] d, 

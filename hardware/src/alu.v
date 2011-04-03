@@ -28,29 +28,29 @@ module alu(	input [31:0] 	a, b,
 //11111:blez
  
 always@(*)
-	case(alucontrol)
-		5'b00000: y <= a + b;
-		5'b00001: y <= a - b;
-		5'b00010: y <= a & b;
-		5'b00011: y <= !(a | b);
-		5'b00100: y <= a | b;
-		5'b00101: y <= a ^ b;
-		5'b00110: y <= b;
-		5'b00111: y <= a;
-//		5'b01000: y <= signed(a) + signed(b)
-		5'b01001: y <= a << b;
-		5'b01010: y <= a >> b;
-		5'b01011: y <= a >>> b;
-		5'b01110: y <= ( signed(a) < signed(b) ? 32'b1 : 32'b0);
-		5'b01111: y <= ( a < b ? 32'b1 : 32'b0);
+	case(ALUControlE)
+		5'b00000: y = a + b;
+		5'b00001: y = a - b;
+		5'b00010: y = a & b;
+		5'b00011: y = !(a | b);
+		5'b00100: y = a | b;
+		5'b00101: y = a ^ b;
+//		5'b00110: y = b;
+//		5'b00111: y = a;
+//		5'b01000: y = $signed(a) + $signed(b)
+		5'b01001: y = a << b;
+		5'b01010: y = a >> b;
+		5'b01011: y = a >>> b;
+		5'b01110: y = ( $signed(a) < $signed(b) ? 32'b1 : 32'b0);
+		5'b01111: y = ( a < b ? 32'b1 : 32'b0);
 //		5'b10000-5'b11001:
-		5'b11010: y <= ( (a == b) ? ZeroE = 1'b1 : ZeroE = 1'b0);
-		5'b11011: y <= ( (a != b) ? ZeroE = 1'b1 : ZeroE = 1'b0);
-		5'b11100: y <= ( a > 0 ? ZeroE = 1'b1 : ZeroE = 1'b0);
-		5'b11101: y <= ( a >= 0 ? ZeroE = 1'b1 : ZeroE = 1'b0);
-		5'b11110: y <= ( a < 0 ? ZeroE = 1'b1 : ZeroE = 1'b0);
-		5'b11111: y <= ( a <= 0 ? ZeroE = 1'b1 : ZeroE = 1'b0);
-		default: 							//ERROR!
+		5'b11010: ZeroE = ( (a == b) ? 1'b1 : 1'b0);
+		5'b11011: ZeroE = ( (a != b) ? 1'b1 : 1'b0);
+		5'b11100: ZeroE = ( a > 0 ? 1'b1 : 1'b0);
+		5'b11101: ZeroE = ( a >= 0 ? 1'b1 : 1'b0);
+		5'b11110: ZeroE = ( a < 0 ? 1'b1 : 1'b0);
+		5'b11111: ZeroE = ( a <= 0 ? 1'b1 : 1'b0);
+//		default: 							//ERROR!
 	endcase
 endmodule
 

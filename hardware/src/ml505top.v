@@ -3,7 +3,7 @@ module ml505top
     input        FPGA_SERIAL_RX,
     output       FPGA_SERIAL_TX,
     input        GPIO_SW_C,
-    input        USER_CLK
+    input        USER_CLK,
 
     input        PHY_COL,
     input        PHY_CRS,
@@ -101,6 +101,47 @@ module ml505top
         .REFCLK(cpu_clk_g), 
         .RST(~pll_lock)
     );
+
+
+//CODE STARTS HERE!!!!!!!!!!!!!!!!!!
+
+	wire [31:0] PCI;
+	wire [3:0] MaskM;
+	wire [31:0] ALUOutM;
+	wire [31:0] WriteDataM;
+	wire ReadDataM;
+	wire InstrI;
+	
+	blk_mem_gen_v4_3 imem(
+		.clka(cpu_clk_g),
+		.ena(1'b1),
+		.wea(4'b0), //no writing to instruction memory
+		.addra(PCI[11:0]),
+		.dina(32'b0),
+		.douta(InstrI));
+
+	blk_mem_gen_v4_3 dmem(
+		.clka(cpu_clk_g),
+		.ena(1'b1),
+		.wea(MaskM),
+		.addra(ALUOutM[11:0]),
+		.dina(WriteDataM),
+		.douta(ReadDataM));
+
+	mips proc(
+		.clk(cpu_clk_g),
+		.reset(GPIO_SW_C),
+		.InstrI(InstrI),
+		.ReadDataM(ReadDataM),
+		.PCI(PCI),
+		.MaskM(MaskM),
+		.ALUoutM(ALUoutM),
+		.WriteDataM(WriteDataM));
+
+
+
+
+//CODE ENDS HERE!!!!!!!!!!!!!!!
 
     always @(posedge cpu_clk_g)
     begin

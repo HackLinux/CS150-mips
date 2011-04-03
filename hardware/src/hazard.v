@@ -3,15 +3,9 @@ module hazard(	input	RsE,
 		input 	RegWriteM,
 		input	WriteRegM,
 		output  ForwardAE,
-		output  ForwardBE,);
+		output  ForwardBE);
 
-	if((RsE != 0) & (RsE == WriteRegM) & RegWriteM)
-		ForwardAE = 1;
-	else
-		ForwardAE = 0;
-	if ((RtE != 0) & (RtE == WriteRegM) & RegWriteM)
-		ForwardBE = 1;
-	else
-		ForwardBE = 0;
+assign ForwardAE = (RsE != 0) & (RsE == WriteRegM) & RegWriteM;
+assign ForwardBE = (RtE != 0) & (RtE == WriteRegM) & RegWriteM;
 
 endmodule

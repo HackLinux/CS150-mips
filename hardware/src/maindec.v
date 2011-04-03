@@ -1,4 +1,4 @@
-module maindec(	input [5:0] 	Op,
+module maindec(	input [5:0] 	op,
 		input [5:0] 	Funct,
 		output		JALValM, JALDstM, 
 		output [1:0]	PCBranchAddrE,
@@ -11,7 +11,7 @@ module maindec(	input [5:0] 	Op,
 		output [1:0]	ALUOp,
 		output [3:0]	MaskOp);
 
-reg [8:0] controls;
+reg [17:0] controls;
 
 assign {JumpM, JALValM, JALDstM, RegWriteM, 
 	SignOrZeroE, RegDstE, ALUSrcE, 

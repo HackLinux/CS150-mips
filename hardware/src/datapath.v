@@ -1,33 +1,39 @@
 module datapath(	input		clk, reset,
-			input		JALValM, JALDstM, 
+			input		JALValE, JALDstE, 
 			input [1:0]	PCBranchAddrE,
-			input		RegWriteM, 
+			input		RegWriteE, 
 			input		SignOrZeroE,
 			input		RegDstE, RegValE,
 			input [1:0]	ALUSrcE, 
-			input		MemToRegM,
+			input		MemToRegE,
 			input [3:0]	ALUControlE,
-			input       	JumpM,
+			input       	JumpE,
 			input [1:0]	MaskControlE,
-			input [1:0]	LBLHEnableM,
-	                output [31:0] 	PCI,
-        	        input  [31:0] 	InstrI,
-                	output [31:0] 	MaskM, ALUOutM, WriteDataM,
-	                input  [31:0] 	ReadDataM
+			input [1:0]	LBLHEnableE,
+			output [31:0] 	PCI,
+			input  [31:0] 	InstrI,
+			output [3:0] MaskM,
+			output [31:0] 	ALUOutMOut, WriteDataM,
+			input  [31:0] 	ReadDataM,
 			input		ForwardAE,
 			input		ForwardBE,
 			output 		RsE,
 			output		RtE,
-			output 		RegWriteM,
-			output		WriteRegM);
+			output		WriteRegMOut);
 
 //outputs ALUOutM, WriteDataM
 
-  wire [4:0]  writereg;
+  wire [4:0]  WriteRegM; //wire connecting FF output to module output
+  assign WriteRegMOut = WriteRegM;
+
+  wire ALUOutM; //wire connecting FF output to module output
+  assign ALUOutMOut = ALUOutM;
+
   wire [31:0] PCNextI, PCPlus4I, PCBranchE, PCBranchM;
   wire [31:0] SignImmE, SignImmSh;
   wire [31:0] srca, srcb;
   wire [31:0] result;
+  wire [31:0] PCIOut; 
 
   wire [31:0] RSValE, PCBranchCompE, A3, WD3, RSValE, RTValE, WriteRegE, SrcBMuxE, ImmSh;
   wire [27:0] JumpSh;
@@ -36,12 +42,13 @@ module datapath(	input		clk, reset,
   wire [31:0] SrcA, SrcB, ALUOutE;
 
 
- 	assign RsE = Instr[25:21];
- 	assign RtE = Instr[20:16];
+ 	assign RsE = InstrI[25:21];
+ 	assign RtE = InstrI[20:16];
 
   // next PC logic
-  flopr #(32) pcreg(clk, reset, PCNextI, PCI);
-  adder       pcadd1(PCI, 32'b100, PCPlus4I);
+  assign PCI = PCIOut;
+  flopr #(32) pcreg(clk, reset, PCNextI, PCIOut);
+  adder       pcadd1(PCI, 32'b0100, PCPlus4I);
 	//PC Branch Datapath (Lowest Path)
   		//PCBranch mux: 01
   	signext     	se(InstrE[15:0], SignOrZeroE, SignImmE);
@@ -66,7 +73,7 @@ module datapath(	input		clk, reset,
 		//Far-Right Mux
 	mux2    resmux(ALUOutM, MaskDataM, MemToRegM, ResultM);
 		//A3 Input Mux
-	mux2    a3mux(WriteRegM, 32b'11111, JALDestM, A3);
+	mux2 #(5)   a3mux(WriteRegM, 5b'11111, JALDestM, A3);
 		//WD3 Input Mux
 	mux2    wd3mux(ResultM, PCPlus4E, JALValM, WD3);
   // ALU logic
@@ -87,8 +94,19 @@ module datapath(	input		clk, reset,
 	//maskapply
 	maskapply maskapply(ReadDataM, LBLHEnableM, MaskDataM);
 
-//How to implement pipeline register?
-//pflopr(input: MaskE, ALUOutE, WriteDataE, WriteRegE, PCBranchE; output: MaskM, ALUOutM, WriteDataM, WriteRegM, PCBranchM)
-//also: input: JALValE, JALDestE, RegWriteE, MemToRegE; output: JALValM, JALDestM, RegWriteM, MemToRegM;
+//pipeline register
+	flopr #(15) XMsave(clk, 
+							reset,
+							{MaskE, ALUOutE, WriteDataE, 
+								WriteRegE, PCBranchE, RegWriteE, 
+								MemToRegE, LBLHEnableE, JALValE, JALDstE, JumpE},
+							{MaskM, ALUOutM, WriteDataM, 
+								WriteRegM, PCBranchM, RegWriteM, 
+								MemToRegM, LBLHEnableM, JALValM, JALDstM, JumpM});
+
+	flopr #(2) IXsave(clk, 
+							reset,
+							{InstrI, PCPlus4I},
+							{InstrE, PCPlus4E});
 
 endmodule

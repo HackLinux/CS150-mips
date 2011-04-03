@@ -3,5 +3,5 @@ module mux2 #(parameter WIDTH = 32)
               input              s, 
               output [WIDTH-1:0] y);
 
-  assign y = s ? d1 : d0; 
+  assign y = (s ? d1 : d0); 
 endmodule

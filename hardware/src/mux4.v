@@ -3,5 +3,5 @@ module mux4 #(parameter WIDTH = 32)
               input              s, 
               output [WIDTH-1:0] y);
 
-  assign y = s[1] ? (s[0] ? d2 : d3) : (s[0] ? d1 : d0); 
+  assign y = (s[1] ? (s[0] ? d2 : d3) : (s[0] ? d1 : d0)); 
 endmodule
