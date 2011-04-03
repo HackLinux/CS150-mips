@@ -1,3 +1,3 @@
 TARGET := echo
 
-include ../Makefile.in
+include ../Makefile.gcc.in

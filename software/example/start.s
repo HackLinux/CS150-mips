@@ -2,5 +2,5 @@
 .global     _start
 
 _start:
-    li      $sp, 0xFF
+    li      $sp, 0x100
     jal     main
