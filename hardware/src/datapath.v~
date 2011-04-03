@@ -76,5 +76,5 @@ module datapath(	input		clk, reset,
 
 //How to implement pipeline register?
 //pflopr(input: MaskE, ALUOutE, WriteDataE, WriteRegE, PCBranchE; output: MaskM, ALUOutM, WriteDataM, WriteRegM, PCBranchM)
-//also: input: JALValE, JALDestE, RegWriteE, MemToRegE; output: JALValM, JALDestM, RegWriteM, MemToRegM;
+
 endmodule

@@ -1,12 +1,11 @@
 module controller(	input  [5:0]	Op, Funct,
-                  	input        	ZeroM,
+                  	input        	ZeroE,
 			output		JALValM, JALDstM, 
 			output [1:0]	PCBranchAddrE,
 			output		RegWriteM, 
 			output		SignOrZeroE,
 			output		RegDstE, RegValE,
 			output [1:0]	ALUSrcE, 
-
 			output		MemToRegM,
 			output [3:0]	ALUControlE,
 			output [1:0]	MaskControlE,
@@ -14,7 +13,7 @@ module controller(	input  [5:0]	Op, Funct,
 			output       	JumpM);
 
 	wire [1:0] aluop;
-	wire [1:0] maskop;
+	wire [3:0] maskop;
 
 assign {JumpM, JALValM, JALDstM, RegWriteM, 
 	SignOrZeroE, RegDstE, ALUSrcE, 
