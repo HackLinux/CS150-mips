@@ -32,9 +32,10 @@ synth xst: $(XST_OUT)
 #NGDBUILD
 NGDBUILD_OUT := $(TOP).ngd
 UCF_FLAG := $(if $(UCF),-uc $(UCF))
+NGC_DIRS := $(shell find $(SRC) -type d -exec echo -n "-sd {} " \;)
 
 $(NGDBUILD_OUT): $(XST_OUT) $(UCF)
-	ngdbuild -dd _ngo -sd $(SRC) -sd $(SRC)/blk_mem_gen_v4_3 -nt timestamp $(UCF_FLAG) -p $(PART) $(XST_OUT) $@
+	ngdbuild -dd _ngo $(NGC_DIRS) -nt timestamp $(UCF_FLAG) -p $(PART) $(XST_OUT) $@
 
 
 

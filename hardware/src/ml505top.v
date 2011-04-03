@@ -4,14 +4,26 @@ module ml505top
     output       FPGA_SERIAL_TX,
     input        GPIO_SW_C,
     input        USER_CLK
+
+    input        PHY_COL,
+    input        PHY_CRS,
+    output       PHY_RESET,
+    input        PHY_RXCLK,
+    input        PHY_RXCTL_RXDV,
+    input  [3:0] PHY_RXD,
+    input        PHY_RXER,
+    input        PHY_TXCLK,
+    output       PHY_TXCTL_TXEN,
+    output [3:0] PHY_TXD,
+    output       PHY_TXER
 );
     wire rst;
 
-    reg [1:0]  reset_r;
-    reg [15:0] count_r;
+    reg [3:0]  reset_r;
+    reg [25:0] count_r;
 
-    wire [1:0]  next_reset_r;
-    wire [15:0] next_count_r;
+    wire [3:0]  next_reset_r;
+    wire [25:0] next_count_r;
 
     wire user_clk_g;
 
@@ -96,13 +108,12 @@ module ml505top
         count_r <= next_count_r;
     end
 
-    assign next_reset_r = {reset_r[0:0], GPIO_SW_C};
+    assign next_reset_r = {reset_r[2:0], GPIO_SW_C};
 
-    assign rst = count_r == 16'h000F | ~pll_lock | ~ctrl_lock;
+    assign rst = (count_r == 26'b1) | ~pll_lock | ~ctrl_lock;
 
     assign next_count_r
-        = (reset_r[1:1])     ? 16'h0001
-        : (count_r == 15'b0) ? 16'h0000
+        = (count_r == 26'b0) ? (reset_r[3] ? 26'b1 : 26'b0)
         :                      count_r + 1;
 
 endmodule
