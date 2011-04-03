@@ -3,7 +3,7 @@ module datapath(	input		clk, reset,
 			input [1:0]	PCBranchAddrE,
 			input		RegWriteE, 
 			input		SignOrZeroE,
-			input		RegDstE, RegValE,
+			input		RegDstE,
 			input [1:0]	ALUSrcE, 
 			input		MemToRegE,
 			input [3:0]	ALUControlE,
@@ -37,7 +37,6 @@ module datapath(	input		clk, reset,
 
   wire [31:0] RSValE, PCBranchCompE, A3, WD3, RSValE, RTValE, WriteRegE, SrcBMuxE, ImmSh;
   wire [27:0] JumpSh;
-  wire [4:0] WriteRegMuxE;
 
   wire [31:0] SrcA, SrcB, ALUOutE;
 
@@ -67,9 +66,7 @@ module datapath(	input		clk, reset,
   regfile     rf(clk, RegWriteM, instr[25:21], instr[20:16], A3, WD3, RSValE, RTValE);
 	//Register File Datapath (Middle Path)
 		//Left Mux
-	mux2 #(5)   wrmux(InstrE[20:16], InstrE[15:11], RegDstE, WriteRegMuxE);
-		//Middle Mux
-	mux2	wrvmux({27'b0, WriteRegMuxE}, RTValE, RegValE, WriteRegE); 
+	mux2 #(5)   wrmux(InstrE[20:16], InstrE[15:11], RegDstE, WriteRegE);
 		//Far-Right Mux
 	mux2    resmux(ALUOutM, MaskDataM, MemToRegM, ResultM);
 		//A3 Input Mux
