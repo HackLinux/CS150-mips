@@ -12,6 +12,7 @@ module datapath(	input		clk, reset,
 			input [1:0]	LBLHEnableE,
 			output [31:0] 	PCI,
 			input  [31:0] 	InstrI,
+			output [31:0] InstrEOut,
 			output [3:0] 	MaskM,
 			output [31:0] 	ALUOutMOut, WriteDataM,
 			input  [31:0] 	ReadDataM,
@@ -37,7 +38,9 @@ module datapath(	input		clk, reset,
   wire [27:0] JumpSh;
   wire  [4:0]	WriteRegE;
   wire [31:0] SrcA, SrcB, ALUOutE;
+  wire [31:0] InstrE;
 
+	assign InstrEOut = InstrE;
 
  	assign RsE = InstrI[25:21];
  	assign RtE = InstrI[20:16];
