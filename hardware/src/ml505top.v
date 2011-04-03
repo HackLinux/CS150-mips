@@ -135,7 +135,7 @@ module ml505top
 		.ReadDataM(ReadDataM),
 		.PCI(PCI),
 		.MaskM(MaskM),
-		.ALUOutM(ALUoutM),
+		.ALUOutM(ALUOutM),
 		.WriteDataM(WriteDataM));
 
 		assign FPGA_SERIAL_TX = 0; //FOR NOW..
