@@ -7,7 +7,6 @@ module datapath(	input		clk, reset,
 			input [1:0]	ALUSrcE, 
 			input		MemToRegE,
 			input [3:0]	ALUControlE,
-			input       	JumpE,
 			input [1:0]	MaskControlE,
 			input [1:0]	LBLHEnableE,
 			output [31:0] 	PCI,
@@ -34,7 +33,9 @@ module datapath(	input		clk, reset,
   wire [31:0] SignImmE, SignImmSh;
   wire [31:0] PCIOut; 
 
-  wire [31:0] PCBranchCompE, A3, WD3, RSValE, RTValeE, SrcBMuxE, ImmSh;
+  wire [31:0] PCBranchCompE, WD3, RSValE, RTValE, SrcBMuxE, ImmSh;
+  wire [4:0] A3;
+  wire JumpE;
   wire [27:0] JumpSh;
   wire  [4:0]	WriteRegE;
   wire [31:0] SrcA, SrcB, ALUOutE;
@@ -55,8 +56,8 @@ module datapath(	input		clk, reset,
   	sl2         	immsh(SignImmE, SignImmSh);
   	adder       	pcadd2(PCPlus4E, SignImmSh, PCBranchCompE);
 		//PCBranch mux: 11
-  	sl2		jsh(instr[25:0], JumpSh);
-  	mux4 		pcbrmux(RSValE, PCBranchCompE, PCPlus4E, {Instr[31:28], JumpSh, 2'b00}, PCBranchAddrE, PCBranchE);
+  	sl2		jsh(InstrE[25:0], JumpSh);
+  	mux4 		pcbrmux(RSValE, PCBranchCompE, PCPlus4E, {InstrE[31:28], JumpSh, 2'b00}, PCBranchAddrE, PCBranchE);
 		//PCNextI mux
   	mux2 		pcmux(PCPlus4I, PCBranchM, JumpM, PCNextI);
 
@@ -64,31 +65,33 @@ module datapath(	input		clk, reset,
 //pflopr(input: InstrI, PCPlus4I; output: InstrE, PCPlus4E)
 
   // register file logic
-  regfile     rf(clk, RegWriteM, instr[25:21], instr[20:16], A3, WD3, RSValE, RTValE);
+  regfile     rf(clk, RegWriteM, InstrE[25:21], InstrE[20:16], A3, WD3, RSValE, RTValE);
 	//Register File Datapath (Middle Path)
 		//Left Mux
 	mux2 #(5)   wrmux(InstrE[20:16], InstrE[15:11], RegDstE, WriteRegE);
 		//Far-Right Mux
 	mux2    resmux(ALUOutM, MaskDataM, MemToRegM, ResultM);
 		//A3 Input Mux
-	mux2 #(5) a3mux(WriteRegM, 5'b11111, JALDestM, A3);
+	mux2 #(5) a3mux(WriteRegM, 5'b11111, JALDstM, A3);
 		//WD3 Input Mux
 	mux2    wd3mux(ResultM, PCPlus4E, JALValM, WD3);
   // ALU logic
 	//ALUSrc mux: 10
 	sl16	luish(InstrE[15:0], ImmSh);
 	//ALUSrcE mux
-	mux4	srcbmux(RTValE, SignImm, ImmSh, {27'b0, InstrE[10:6]}, ALUSrcE, SrcBMuxE);
+	mux4	srcbmux(RTValE, SignImmE, ImmSh, {27'b0, InstrE[10:6]}, ALUSrcE, SrcBMuxE);
 	//SrcA mux 
 	mux2	srcahazmux(RSValE, ResultM, ForwardAE, SrcA);
 	//SrcB mux
 	mux2	srcbhazmux(RTValE, ResultM, ForwardBE, SrcB);
 	//ALU
-	alu	alu(SrcA, SrcB, ALUControlE, ALUOutE, ZeroE);
+	alu	alu(SrcA, SrcB, ALUControlE, ZeroE, ALUOutE);
+
+	assign JumpE = ALUControlE[3] & ZeroE;
 
   // Mask logic
 	//writemask
-	writemask writemask(MaskControlE, ALUOutE, WriteDataE, MaskE, WriteDataE);
+	writeMaskE writemask(MaskControlE, ALUOutE, RTValE, MaskE, WriteDataE);
 	//maskapply
 	maskapply maskapply(ReadDataM, LBLHEnableM, MaskDataM);
 

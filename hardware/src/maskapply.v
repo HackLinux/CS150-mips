@@ -1,6 +1,6 @@
 module maskapply(input [31:0] rd,
 	input [2:0] MaskControlM,
-	output [31:0] rdToMux);
+	output reg [31:0] rdToMux);
 
 
 always@(*)

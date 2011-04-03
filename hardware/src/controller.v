@@ -4,21 +4,23 @@ module controller(	input  [5:0]	Op, Funct,
 			output [1:0]	PCBranchAddrE,
 			output		RegWriteE, 
 			output		SignOrZeroE,
-			output		RegDstE, RegValE,
+			output		RegDstE,
 			output [1:0]	ALUSrcE, 
 			output		MemToRegE,
 			output [3:0]	ALUControlE,
 			output [1:0]	MaskControlE,
-			output [1:0]	LBLHEnableE,
-			output       	JumpE);
+			output [1:0]	LBLHEnableE);
 
-	wire [1:0] aluop;
-	wire [3:0] maskop;
+	wire [1:0] ALUOp;
+	wire [3:0] MaskOp;
+	wire [3:0] ALUControlSig;
+	assign ALUControlE = ALUControlSig;
 
-	maindec mnd(Op, Funct, JALValE, JALDstE, PCBranchAddrE, RegWriteE, SignOrZeroE, RegDstE, RegValE, ALUSrcE, MemToRegE, ALUOp, MaskOp);
-	aludec  ad(Funct, Op, ALUOp, ALUControlE);
+
+	maindec mnd(Op, Funct, JALValE, JALDstE, PCBranchAddrE, RegWriteE, SignOrZeroE, RegDstE, ALUSrcE, MemToRegE, ALUOp, MaskOp);
+	aludec  ad(Funct, Op, ALUOp, ALUControlSig);
 	maskdec mkd(MaskOp, MaskControlE, LBLHEnableE);
 
-  	assign JumpE = ALUControlE[3] & ZeroE;
+  	
 
 endmodule
