@@ -1,9 +1,0 @@
-MO UART NULL ../../src/UART/UART.v vlg48/_u_a_r_t.bin 1301817095
-MO adder NULL ../../src/adder.v vlg54/adder.bin 1301817095
-MO blk_mem_gen_v4_3 NULL ../../src/blk_mem_gen_v4_3/blk_mem_gen_v4_3.v vlg0F/blk__mem__gen__v4__3.bin 1301817095
-MO aludec NULL ../../src/aludec.v vlg02/aludec.bin 1301817095
-MO maskapply NULL ../../src/maskapply.v vlg12/maskapply.bin 1301817095
-MO UAReceive NULL ../../src/UART/UAReceive.v vlg65/_u_a_receive.bin 1301817095
-MO UATransmit NULL ../../src/UART/UATransmit.v vlg60/_u_a_transmit.bin 1301817095
-MO controller NULL ../../src/controller.v vlg54/controller.bin 1301817095
-MO alu NULL ../../src/alu.v vlg0A/alu.bin 1301817095
