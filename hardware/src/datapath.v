@@ -31,13 +31,11 @@ module datapath(	input		clk, reset,
 
   wire [31:0] PCNextI, PCPlus4I, PCBranchE, PCBranchM;
   wire [31:0] SignImmE, SignImmSh;
-  wire [31:0] srca, srcb;
-  wire [31:0] result;
   wire [31:0] PCIOut; 
 
-  wire [31:0] PCBranchCompE, A3, WD3, RSValE, RTValeE, WriteRegE, SrcBMuxE, ImmSh;
+  wire [31:0] PCBranchCompE, A3, WD3, RSValE, RTValeE, SrcBMuxE, ImmSh;
   wire [27:0] JumpSh;
-  wire [4:0]	WriteRegE, WriteRegM
+  wire  [4:0]	WriteRegE;
   wire [31:0] SrcA, SrcB, ALUOutE;
 
 
@@ -70,7 +68,7 @@ module datapath(	input		clk, reset,
 		//Far-Right Mux
 	mux2    resmux(ALUOutM, MaskDataM, MemToRegM, ResultM);
 		//A3 Input Mux
-	mux2 #(5)   a3mux(WriteRegM, 5b'11111, JALDestM, A3);
+	mux2 #(5) a3mux(WriteRegM, 5'b11111, JALDestM, A3);
 		//WD3 Input Mux
 	mux2    wd3mux(ResultM, PCPlus4E, JALValM, WD3);
   // ALU logic
