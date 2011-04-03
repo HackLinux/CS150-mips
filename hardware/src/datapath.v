@@ -12,7 +12,7 @@ module datapath(	input		clk, reset,
 			input [1:0]	LBLHEnableE,
 			output [31:0] 	PCI,
 			input  [31:0] 	InstrI,
-			output [3:0] MaskM,
+			output [3:0] 	MaskM,
 			output [31:0] 	ALUOutMOut, WriteDataM,
 			input  [31:0] 	ReadDataM,
 			input		ForwardAE,
@@ -35,9 +35,9 @@ module datapath(	input		clk, reset,
   wire [31:0] result;
   wire [31:0] PCIOut; 
 
-  wire [31:0] RSValE, PCBranchCompE, A3, WD3, RSValE, RTValE, WriteRegE, SrcBMuxE, ImmSh;
+  wire [31:0] PCBranchCompE, A3, WD3, RSValE, RTValeE, WriteRegE, SrcBMuxE, ImmSh;
   wire [27:0] JumpSh;
-
+  wire [4:0]	WriteRegE, WriteRegM
   wire [31:0] SrcA, SrcB, ALUOutE;
 
 

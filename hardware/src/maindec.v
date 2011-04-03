@@ -15,7 +15,7 @@ reg [8:0] controls;
 
 assign {JumpM, JALValM, JALDstM, RegWriteM, 
 	SignOrZeroE, RegDstE, ALUSrcE, 
-	PCBranchAddrE, MemToRegM, 
+	gPCBranchAddrE, MemToRegM, 
 	ALUop, MaskOp} = controls;
 
 //assume SignOrZeroE == 0 is zero-extend
