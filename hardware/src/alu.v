@@ -19,7 +19,8 @@ module alu(	input [31:0] 	a, b,
 //01011:sra
 //01110:slt
 //01111:sltu
-//10000-11001:	//needed?
+//10000: j/jr/jal/jalr
+//10001-11001:	//needed?
 //11010:beq
 //11011:bne
 //11100:bgtz
@@ -41,15 +42,17 @@ always@(*)
 		5'b01011: y <= a >>> b;
 		5'b01110: y <= ( $signed(a) < $signed(b) ? 32'b1 : 32'b0);
 		5'b01111: y <= ( a < b ? 32'b1 : 32'b0);
-//		5'b10000-5'b11001: y <= 0; //UNDEFINED BEHAVIOR
+//		5'b10000: ZeroE <= 1;
+		5'b10001-5'b11001: $display("Error at time %t: ALUControlE: %b", $time, ALUControlE); //UNDEFINED BEHAVIOR 
 		5'b11010: ZeroE <= ( (a == b) ? 1'b1 : 1'b0);
 		5'b11011: ZeroE <= ( (a != b) ? 1'b1 : 1'b0);
 		5'b11100: ZeroE <= ( a > 0 ? 1'b1 : 1'b0);
 		5'b11101: ZeroE <= ( a >= 0 ? 1'b1 : 1'b0);
 		5'b11110: ZeroE <= ( a < 0 ? 1'b1 : 1'b0);
-		5'b11111: ZeroE <= ( a <= 0 ? 1'b1 : 1'b0);
-//		default: 							//ERROR!
+		5'b11111: ZeroE <= ( ((a < 0) | (a == 0)) ? 1'b1 : 1'b0);
+//		default: $display("Error at time %t: ALUControlE: %b", $time, ALUControlE);	//ERROR!
 	endcase
+
 endmodule
 
 

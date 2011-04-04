@@ -1,34 +1,26 @@
-module maindec(	input [5:0] Op,
+module maindec(	input [5:0] 	Op,
 		input [5:0] 	Funct,
-		output		JALValM, JALDstM, 
+		output		JALValE, JALDstE, 
 		output [1:0]	PCBranchAddrE,
-		output		RegWriteM, 
+		output		RegWriteE, 
 		output		SignOrZeroE,
-		output		RegDstE, RegValE,
+		output		RegDstE,
 		output [1:0]	ALUSrcE, 
-		output		MemWriteM,
-		output		MemToRegM,
+		output		MemToRegE,
 		output [1:0]	ALUOp,
 		output [3:0]	MaskOp);
 
 reg [15:0] controls;
 
-
-//We don't need a jumpE field because the datapath calculates jumpE by itself. See for yourself. I took it out of the maindec, controller, and mips. 
-
-assign {JALValM, JALDstM, RegWriteM, 
-	SignOrZeroE, RegDstE, ALUSrcE,
-	PCBranchAddrE, MemToRegM, 
-	ALUop, MaskOp} = controls;
+assign {JALValE, JALDstE, RegWriteE, SignOrZeroE, RegDstE, ALUSrcE, PCBranchAddrE, MemToRegE, ALUOp, MaskOp} = controls;
 
 //assume SignOrZeroE == 0 is zero-extend
 
-
 always @ (*)
-	case(Op) 
+	case(Op) //						   -----  
 		6'b000001: controls <= 16'bXXX1X00010100000; //BLTZ,BGEZ
-		6'b000010: controls <= 16'bXXXXXXX11XXX0000; //J
-		6'b000011: controls <= 16'b11XXXXX11XXX0000; //JAL
+		6'b000010: controls <= 16'bXXXXXXX11X100000; //J
+		6'b000011: controls <= 16'b11XXXXX11X100000; //JAL
 		6'b000100: controls <= 16'bXXX1X00010100000; //BEQ
 		6'b000101: controls <= 16'bXXX1X00010100000; //BNE
 		6'b000110: controls <= 16'bXXX1X00010100000; //BLEZ
@@ -48,12 +40,12 @@ always @ (*)
 		6'b101000: controls <= 16'b0000X01XX0000110; //SB
 		6'b101001: controls <= 16'b0000X01XX0000111; //SH
 		6'b101011: controls <= 16'b0000X01XX0001000; //SW
-		default:   case(Funct) 
+		default:   case(Funct) //		-----
 			6'b000000: controls <= 16'b0011111XX0110000; //SLL
 			6'b000010: controls <= 16'b0011111XX0110000; //SRL
 			6'b000011: controls <= 16'b0011111XX0110000; //SRA
-			6'b001000: controls <= 16'bXXXXXXX00XXX0000; //JR
-			6'b001001: controls <= 16'b10XXXXX00XXX0000; //JALR
+			6'b001000: controls <= 16'bXXXXXXX00X110000; //JR
+			6'b001001: controls <= 16'b10XXXXX00X110000; //JALR
 			default:   controls <= 16'b0011100XX0110000; //All Other R-type
 		endcase
 	endcase

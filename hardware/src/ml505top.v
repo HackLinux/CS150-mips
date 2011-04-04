@@ -1,23 +1,32 @@
 module ml505top
 (
+
+//NEED TO CHANGE CLOCK FREQUENCY
+
     input        FPGA_SERIAL_RX,
     output       FPGA_SERIAL_TX,
-    input        GPIO_SW_C,
-    input        USER_CLK,
+//    input        GPIO_SW_C,
+	 input			reset,
+    input        USER_CLK
 
-    input        PHY_COL,
-    input        PHY_CRS,
-    output       PHY_RESET,
-    input        PHY_RXCLK,
-    input        PHY_RXCTL_RXDV,
-    input  [3:0] PHY_RXD,
-    input        PHY_RXER,
-    input        PHY_TXCLK,
-    output       PHY_TXCTL_TXEN,
-    output [3:0] PHY_TXD,
-    output       PHY_TXER
+//	output ReadDataM
+
+
+
+//    input        PHY_COL,
+//    input        PHY_CRS,
+//    output       PHY_RESET,
+//    input        PHY_RXCLK,
+//    input        PHY_RXCTL_RXDV,
+//    input  [3:0] PHY_RXD,
+//    input        PHY_RXER,
+//    input        PHY_TXCLK,
+//    output       PHY_TXCTL_TXEN,
+//    output [3:0] PHY_TXD,
+//    output       PHY_TXER
 );
-    wire rst;
+    wire rst;	
+	 wire GPIO_SW_C;  //FOR NOW, rst replaced with reset in our added code
 
     reg [3:0]  reset_r;
     reg [25:0] count_r;
@@ -109,12 +118,13 @@ module ml505top
 	wire [3:0] MaskM;
 	wire [31:0] ALUOutM;
 	wire [31:0] WriteDataM;
-	wire ReadDataM;
-	wire InstrI;
-	
-	blk_mem_gen_v4_3 imem(
+	wire [31:0] InstrI;
+	reg [31:0] ReadDataM;
+	wire [31:0] ReadData;
+
+	instr_blk_ram imem(
 		.clka(cpu_clk_g),
-		.ena(1'b1),
+		.ena(!reset), //crude way to "reset" ram
 		.wea(4'b0), //no writing to instruction memory
 		.addra(PCI[11:0]),
 		.dina(32'b0),
@@ -122,23 +132,84 @@ module ml505top
 
 	blk_mem_gen_v4_3 dmem(
 		.clka(cpu_clk_g),
-		.ena(1'b1),
+		.ena(!reset), //crude way to "reset" ram
 		.wea(MaskM),
-		.addra(ALUOutM[11:0]),
+		.addra(ALUOutM[11:0]), //TODO
 		.dina(WriteDataM),
-		.douta(ReadDataM));
+		.douta(ReadData));
 
 	mips proc(
 		.clk(cpu_clk_g),
-		.reset(GPIO_SW_C),
+		.reset(reset),
 		.InstrI(InstrI),
 		.ReadDataM(ReadDataM),
 		.PCI(PCI),
 		.MaskM(MaskM),
 		.ALUOutM(ALUOutM),
 		.WriteDataM(WriteDataM));
+		
 
-		assign FPGA_SERIAL_TX = 0; //FOR NOW..
+  //--|Parameters|--------------------------------------------------------------
+
+  parameter   ClockFreq     =             50000000;  // 100 MHz
+  parameter   UARTBaudRate  =             115200;     // 115.2 KBaud
+
+  //----------------------------------------------------------------------------
+
+
+	wire UARTDataOutValid, UARTDataInReady;
+	wire [7:0] UARTDataOut;
+	reg [7:0] UARTDataIn;
+	reg UARTDataInValid, UARTDataOutReady;
+		
+	UART #(	.ClockFreq(	ClockFreq),
+				.BaudRate(	UARTBaudRate))
+		uart(		.Clock(	cpu_clk_g),
+				.Reset(		rst),
+				.DataIn(	UARTDataIn),
+				.DataInValid(	UARTDataInValid),
+				.DataInReady(	UARTDataInReady),
+				.DataOut(	UARTDataOut),
+				.DataOutValid(	UARTDataOutValid),
+				.DataOutReady(	UARTDataOutReady),
+				.SIn(		FPGA_SERIAL_RX),
+				.SOut(		FPGA_SERIAL_TX));
+		
+always@(*) begin
+
+//What to do if UARTDataOutValid == 0 (UARTDataInReady == 0)
+
+if(ALUOutM[31:16] == 16'hFFFF) begin
+	case(ALUOutM[3:0])
+		4'h0: ReadDataM = {31'bx, UARTDataOutValid};
+		4'h4: begin
+					UARTDataOutReady = 1'b1;
+					if (UARTDataOutValid) ReadDataM[31:0] = {24'b0, UARTDataOut};
+					else ReadDataM[7:0] = 8'b0; //UNSPECIFIED BEHAVIOR
+		end
+		4'h8: ReadDataM = {31'bx, UARTDataInReady};
+		4'hC: begin
+					if ((MaskM != 0) & UARTDataInReady) UARTDataIn = WriteDataM[7:0];
+					else UARTDataIn = 8'b0; //UNSPECIFIED BEHAVIOR
+					UARTDataInValid = 1'b1;
+		end
+		default: begin
+				$display("not using UART @ %t: ALU out sends %h", $time, ALUOutM);
+				ReadDataM = ReadData;  //default: assume we're not using the uart..
+				UARTDataOutReady = 1'b0;
+				UARTDataInValid = 1'b0;
+				UARTDataIn = 0;
+		end
+	endcase
+end
+else begin
+	ReadDataM = ReadData; 
+	UARTDataOutReady = 1'b0;
+	UARTDataInValid = 1'b0;
+	UARTDataIn = 0;
+end
+
+end
 
 
 //CODE ENDS HERE!!!!!!!!!!!!!!!
