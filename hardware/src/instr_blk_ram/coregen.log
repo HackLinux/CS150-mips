@@ -11,8 +11,6 @@ XST: HDL Analysis
 XST: HDL Synthesis
 XST: Advanced HDL Synthesis
 XST: Low Level Synthesis
-XST: Partition Report
-XST: Final Report
 Generating Implementation files.
 Generating NGC file.
 Finished Generation Stage.

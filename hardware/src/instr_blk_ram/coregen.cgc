@@ -58,7 +58,7 @@
             <spirit:configurableElementValue spirit:referenceId="parameter_output_reset_value_b">0</spirit:configurableElementValue>
             <spirit:configurableElementValue spirit:referenceId="parameter_load_init_file">true</spirit:configurableElementValue>
             <spirit:configurableElementValue spirit:referenceId="parameter_register_portb_output_of_memory_core">false</spirit:configurableElementValue>
-            <spirit:configurableElementValue spirit:referenceId="parameter_coe_file">./instr_blk_ram.coe</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_coe_file">./lwsw.coe</spirit:configurableElementValue>
             <spirit:configurableElementValue spirit:referenceId="parameter_error_injection_type">Single_Bit_Error_Injection</spirit:configurableElementValue>
             <spirit:configurableElementValue spirit:referenceId="parameter_collision_warnings">ALL</spirit:configurableElementValue>
             <spirit:configurableElementValue spirit:referenceId="parameter_reset_priority_a">CE</spirit:configurableElementValue>
@@ -101,43 +101,43 @@
                   <xilinx:file>
                      <xilinx:name>./blk_mem_gen_ds512.pdf</xilinx:name>
                      <xilinx:userFileType>pdf</xilinx:userFileType>
-                     <xilinx:timeStamp>Mon Apr 04 07:44:44 GMT 2011</xilinx:timeStamp>
+                     <xilinx:timeStamp>Tue Apr 05 03:36:51 GMT 2011</xilinx:timeStamp>
                      <xilinx:checkSum>0x009F489B</xilinx:checkSum>
                   </xilinx:file>
                   <xilinx:file>
                      <xilinx:name>./blk_mem_gen_readme.txt</xilinx:name>
                      <xilinx:userFileType>txt</xilinx:userFileType>
-                     <xilinx:timeStamp>Mon Apr 04 07:44:44 GMT 2011</xilinx:timeStamp>
+                     <xilinx:timeStamp>Tue Apr 05 03:36:51 GMT 2011</xilinx:timeStamp>
                      <xilinx:checkSum>0xED96AB8B</xilinx:checkSum>
                   </xilinx:file>
                   <xilinx:file>
                      <xilinx:name>./instr_blk_ram.asy</xilinx:name>
                      <xilinx:userFileType>asy</xilinx:userFileType>
-                     <xilinx:timeStamp>Mon Apr 04 07:43:34 GMT 2011</xilinx:timeStamp>
+                     <xilinx:timeStamp>Tue Apr 05 03:35:44 GMT 2011</xilinx:timeStamp>
                      <xilinx:checkSum>0xEC210CA9</xilinx:checkSum>
                   </xilinx:file>
                   <xilinx:file>
                      <xilinx:name>./instr_blk_ram.mif</xilinx:name>
                      <xilinx:userFileType>mif</xilinx:userFileType>
-                     <xilinx:timeStamp>Mon Apr 04 07:43:34 GMT 2011</xilinx:timeStamp>
-                     <xilinx:checkSum>0x090D827D</xilinx:checkSum>
+                     <xilinx:timeStamp>Tue Apr 05 03:35:44 GMT 2011</xilinx:timeStamp>
+                     <xilinx:checkSum>0x7FA4B454</xilinx:checkSum>
                   </xilinx:file>
                   <xilinx:file>
                      <xilinx:name>./instr_blk_ram.ngc</xilinx:name>
                      <xilinx:userFileType>ngc</xilinx:userFileType>
-                     <xilinx:timeStamp>Mon Apr 04 07:45:08 GMT 2011</xilinx:timeStamp>
-                     <xilinx:checkSum>0x1CA7A836</xilinx:checkSum>
+                     <xilinx:timeStamp>Tue Apr 05 03:37:05 GMT 2011</xilinx:timeStamp>
+                     <xilinx:checkSum>0x282D7480</xilinx:checkSum>
                   </xilinx:file>
                   <xilinx:file>
                      <xilinx:name>./instr_blk_ram.v</xilinx:name>
                      <xilinx:userFileType>verilog</xilinx:userFileType>
-                     <xilinx:timeStamp>Mon Apr 04 07:44:44 GMT 2011</xilinx:timeStamp>
+                     <xilinx:timeStamp>Tue Apr 05 03:36:51 GMT 2011</xilinx:timeStamp>
                      <xilinx:checkSum>0x3BE8151A</xilinx:checkSum>
                   </xilinx:file>
                   <xilinx:file>
                      <xilinx:name>./instr_blk_ram.veo</xilinx:name>
                      <xilinx:userFileType>veo</xilinx:userFileType>
-                     <xilinx:timeStamp>Mon Apr 04 07:44:44 GMT 2011</xilinx:timeStamp>
+                     <xilinx:timeStamp>Tue Apr 05 03:36:51 GMT 2011</xilinx:timeStamp>
                      <xilinx:checkSum>0x4B487AD3</xilinx:checkSum>
                   </xilinx:file>
                </xilinx:fileSet>
@@ -149,8 +149,8 @@
                   <xilinx:file>
                      <xilinx:name>./instr_blk_ram.xco</xilinx:name>
                      <xilinx:userFileType>xco</xilinx:userFileType>
-                     <xilinx:timeStamp>Mon Apr 04 07:45:15 GMT 2011</xilinx:timeStamp>
-                     <xilinx:checkSum>0x4259D87E</xilinx:checkSum>
+                     <xilinx:timeStamp>Tue Apr 05 03:37:11 GMT 2011</xilinx:timeStamp>
+                     <xilinx:checkSum>0x364A4B74</xilinx:checkSum>
                   </xilinx:file>
                </xilinx:fileSet>
                <xilinx:fileSet>
@@ -159,7 +159,7 @@
                      <xilinx:name>./instr_blk_ram_xmdf.tcl</xilinx:name>
                      <xilinx:userFileType>tclXmdf</xilinx:userFileType>
                      <xilinx:userFileType>tcl</xilinx:userFileType>
-                     <xilinx:timeStamp>Mon Apr 04 07:45:15 GMT 2011</xilinx:timeStamp>
+                     <xilinx:timeStamp>Tue Apr 05 03:37:12 GMT 2011</xilinx:timeStamp>
                      <xilinx:checkSum>0xCA647672</xilinx:checkSum>
                   </xilinx:file>
                </xilinx:fileSet>
@@ -169,22 +169,22 @@
                      <xilinx:name>./_xmsgs/pn_parser.xmsgs</xilinx:name>
                      <xilinx:userFileType>ignore</xilinx:userFileType>
                      <xilinx:userFileType>unknown</xilinx:userFileType>
-                     <xilinx:timeStamp>Mon Apr 04 07:45:25 GMT 2011</xilinx:timeStamp>
-                     <xilinx:checkSum>0x0B4295DE</xilinx:checkSum>
+                     <xilinx:timeStamp>Tue Apr 05 03:37:18 GMT 2011</xilinx:timeStamp>
+                     <xilinx:checkSum>0x48AE4B06</xilinx:checkSum>
                   </xilinx:file>
                   <xilinx:file>
                      <xilinx:name>./instr_blk_ram.gise</xilinx:name>
                      <xilinx:userFileType>ignore</xilinx:userFileType>
                      <xilinx:userFileType>gise</xilinx:userFileType>
-                     <xilinx:timeStamp>Mon Apr 04 07:45:26 GMT 2011</xilinx:timeStamp>
+                     <xilinx:timeStamp>Tue Apr 05 03:37:18 GMT 2011</xilinx:timeStamp>
                      <xilinx:checkSum>0x5764C823</xilinx:checkSum>
                   </xilinx:file>
                   <xilinx:file>
                      <xilinx:name>./instr_blk_ram.xise</xilinx:name>
                      <xilinx:userFileType>ignore</xilinx:userFileType>
                      <xilinx:userFileType>xise</xilinx:userFileType>
-                     <xilinx:timeStamp>Mon Apr 04 07:45:26 GMT 2011</xilinx:timeStamp>
-                     <xilinx:checkSum>0x69706803</xilinx:checkSum>
+                     <xilinx:timeStamp>Tue Apr 05 03:37:18 GMT 2011</xilinx:timeStamp>
+                     <xilinx:checkSum>0x41302DB0</xilinx:checkSum>
                   </xilinx:file>
                </xilinx:fileSet>
                <xilinx:fileSet>
@@ -197,7 +197,7 @@
                      <xilinx:userFileType>ignore</xilinx:userFileType>
                      <xilinx:userFileType>txtFlist</xilinx:userFileType>
                      <xilinx:userFileType>txt</xilinx:userFileType>
-                     <xilinx:timeStamp>Mon Apr 04 07:45:26 GMT 2011</xilinx:timeStamp>
+                     <xilinx:timeStamp>Tue Apr 05 03:37:19 GMT 2011</xilinx:timeStamp>
                      <xilinx:checkSum>0x5E302FFF</xilinx:checkSum>
                   </xilinx:file>
                </xilinx:fileSet>

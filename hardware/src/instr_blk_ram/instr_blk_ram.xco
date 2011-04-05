@@ -1,7 +1,7 @@
 ##############################################################
 #
 # Xilinx Core Generator version 12.4
-# Date: Mon Apr  4 07:45:15 2011
+# Date: Tue Apr  5 03:37:11 2011
 #
 ##############################################################
 #
@@ -39,7 +39,7 @@ CSET additional_inputs_for_power_estimation=false
 CSET algorithm=Minimum_Area
 CSET assume_synchronous_clk=false
 CSET byte_size=8
-CSET coe_file=./helloworld.coe
+CSET coe_file=./lwsw.coe
 CSET collision_warnings=ALL
 CSET component_name=instr_blk_ram
 CSET disable_collision_warnings=false
@@ -90,4 +90,4 @@ CSET write_width_a=32
 CSET write_width_b=32
 # END Parameters
 GENERATE
-# CRC: ff33cdd0
+# CRC: 7937a410
