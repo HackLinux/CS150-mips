@@ -19,9 +19,9 @@ module datapath(	input		clk, reset,
 			input  [31:0] 	ReadDataM,
 			input		ForwardAE,
 			input		ForwardBE,
-			output 		RsE,
-			output		RtE,
-			output		WriteRegM,
+			output [4:0] RsE,
+			output [4:0] RtE,
+			output [4:0] WriteRegM,
 			output		RegWriteM);
 
   wire [31:0] PCNextI, PCPlus4I, PCPlus4E, PCBranchE, 

@@ -7,16 +7,17 @@ module mips(	input         clk, reset,
 
 //ZeroE
 
+	wire	[4:0] WriteRegM, RsE, RtE;
 	wire		ZeroE, JALValE, JALDstE, RegWriteE, SignOrZeroE, RegDstE, MemToRegE, JumpE;
 	wire [1:0]	PCBranchAddrE, ALUSrcE, MaskControlE, LBLHEnableE;
 	wire [4:0]	ALUControlE;
-	wire		ForwardAE, ForwardBE, WriteRegM, RsE, RtE;
+	wire		ForwardAE, ForwardBE;
 	wire [31:0] 	InstrE;
 
 	controller	ctrl(	InstrE[31:26], InstrE[5:0], InstrE[16], ZeroE, JALValE, JALDstE, PCBranchAddrE, RegWriteE, SignOrZeroE, RegDstE, ALUSrcE, MemToRegE, ALUControlE, MaskControlE, LBLHEnableE, JumpE);
 
 	datapath 	dpath(	clk, reset, JumpE, JALValE, JALDstE, PCBranchAddrE, RegWriteE, SignOrZeroE, RegDstE, ALUSrcE, MemToRegE, ALUControlE, MaskControlE, LBLHEnableE, PCI, InstrI, InstrE, ZeroE, MaskM, ALUOutM, WriteDataM, ReadDataM, ForwardAE, ForwardBE, RsE, RtE, WriteRegM, RegWriteM);
 
-	hazard		h(	RsE, RtE, RegWriteM, WriteRegM, ForwardAE, ForwardBE);
+	hazard		h(	RsE, RtE, WriteRegM, RegWriteM, ForwardAE, ForwardBE);
 
 endmodule

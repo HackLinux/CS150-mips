@@ -20,6 +20,6 @@ module controller(	input  [5:0]	Op, Funct,
 	aludec  ad(	Op, Funct, ALUOp, SeventeenthBit, ALUControlE);
 	maskdec mkd(	MaskOp, MaskControlE, LBLHEnableE);
 
-	assign JumpE = ALUControlE[3] & ZeroE;
+	assign JumpE = ALUControlE[4] & ZeroE;
 
 endmodule
