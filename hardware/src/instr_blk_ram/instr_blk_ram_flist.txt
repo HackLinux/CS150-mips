@@ -1,0 +1,14 @@
+# Output products list for <instr_blk_ram>
+_xmsgs/pn_parser.xmsgs
+blk_mem_gen_ds512.pdf
+blk_mem_gen_readme.txt
+instr_blk_ram.asy
+instr_blk_ram.gise
+instr_blk_ram.mif
+instr_blk_ram.ngc
+instr_blk_ram.v
+instr_blk_ram.veo
+instr_blk_ram.xco
+instr_blk_ram.xise
+instr_blk_ram_flist.txt
+instr_blk_ram_xmdf.tcl
